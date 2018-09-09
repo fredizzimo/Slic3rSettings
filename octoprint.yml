@@ -1,0 +1,10 @@
+name: octoprint
+channels:
+- conda-forge
+- defaults
+dependencies:
+  - python=2.7
+  - certifi
+  - pip:
+    - https://get.octoprint.org/latest
+
