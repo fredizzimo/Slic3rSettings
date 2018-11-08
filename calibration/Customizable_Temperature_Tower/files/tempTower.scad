@@ -73,16 +73,13 @@ module Tower(x, overhang, gap, addpoint, label)
         linear_extrude(block[Y])
         polygon(points=overhang_pts);
     
-    // make overhang with pointy cone on right side:
+    // make overhang right side:
     if (addpoint==1)
     {   // overhang
         translate([-block[X]/2, -block[Y]/2, z4])
             rotate([90,0,180])
             linear_extrude(block[Y])
             polygon(points=overhang_pts);
-        // pointy cone
-        translate([-block[X]/2-overhang/2, 0, z4])
-            cylinder($fn = 20, h=block[Z]-1, r1=1.5, r2=0, center=false);  
     }
     
     pedestal_z = abs(overhang_z_top -bridge_z_top + bridge_z);
@@ -92,6 +89,12 @@ module Tower(x, overhang, gap, addpoint, label)
         translate([0,0,pedestal_z])
             cube([abs(x)-block[X]/2-gap, bridge_y, bridge_z]);
     }
+    
+    // pointy cone
+    cone_radius = 1.5;
+    translate([block[X]/2 + gap + overhang - gap + cone_radius, bridge_y_front + bridge_y / 2, bridge_z_top])
+    cylinder($fn = 20, h=block[Z] - 1, r1=cone_radius, r2=0, center=false);  
+
 }
 
 z1 = 0;
@@ -109,7 +112,7 @@ for (i = [0 : abs(count)])
 {
     z3 = z2 + i*(pedestal[Z] + block[Z]);
     temp = start_temp + i*abs(temp_step);
-    echo("-> ", i, ": temp=", temp);
+    echo("-> ", i, ": temp=", temp, "z=", z3);
 
     translate([0,0,z3]) 
     {
