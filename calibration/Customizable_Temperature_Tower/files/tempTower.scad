@@ -8,34 +8,39 @@ end_temp = 175;
 // change in temperature between successively printed blocks
 temp_step = 5;
 
+layer_height = 0.2;
+
 
 /* [Detail Geometry] */
 // dimensions of the base plate
-base = [46, 14, 1.5];
+base = [46, 14, 8*layer_height];
 // dimensions of the pedestal under a tower block
-pedestal = [6, 6, 1];
+pedestal = [6, 6, 5*layer_height];
 // dimensions of the tower block
-block = [8, 8, 6];
+block = [8, 8, 30*layer_height];
 // X spacing between the towers
 tower_x_distance = 16*2;
 // left (X-) overhang size
 overhang_l_x = 3;
 // right (X+) overhang size
 overhang_r_x = 5;
+// top of the bridge relative to the top of the block
+bridge_z_top = -2*layer_height;
 // top of the overhang relative to the top of the block
-overhang_z_top = -2.394;
+// TODO: Make this an angle instead
+overhang_z_top = -10*layer_height + bridge_z_top;
+// thickness of the bridge
+bridge_z = 8*layer_height;
 // height of the overhang
-overhang_z = 3;
+overhang_z = 15*layer_height;
 // gap between the bridge and the left (X-) tower
 bridge_l_gap = 1;
 // gap between the bridge and the right (X+) tower
 bridge_r_gap = 3;
 bridge_y_front = -block[Y]/2;
 bridge_y = block[Y]/2;
-// top of the bridge relative to the top of the block
-bridge_z_top = -0.394;
-// thickness of the bridge
-bridge_z = 1.5;
+cone_bridge_gap = 5 * layer_height;
+cone_radius = 1.5;
 // embossing depth of the text
 text_depth = 1;
 // font used for the text
@@ -91,9 +96,9 @@ module Tower(x, overhang, gap, addpoint, label)
     }
     
     // pointy cone
-    cone_radius = 1.5;
+
     translate([block[X]/2 + gap + overhang - gap + cone_radius, bridge_y_front + bridge_y / 2, bridge_z_top])
-    cylinder($fn = 20, h=block[Z] - 1, r1=cone_radius, r2=0, center=false);  
+    cylinder($fn = 20, h=block[Z] - cone_bridge_gap, r1=cone_radius, r2=0, center=false);  
 
 }
 
