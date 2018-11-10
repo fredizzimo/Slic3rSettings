@@ -20,10 +20,14 @@ pedestal = [6, 6, 5*layer_height];
 block = [8, 8, 30*layer_height];
 // X spacing between the towers
 tower_x_distance = 16*2;
+// height of the overhang
+overhang_z = 15*layer_height;
 // left (X-) overhang size
-overhang_l_x = 3;
+overhang_l_angle = 45;
+overhang_l_x = tan(overhang_l_angle) * overhang_z;
 // right (X+) overhang size
-overhang_r_x = 5;
+overhang_r_angle = 60;
+overhang_r_x = tan(overhang_r_angle) * overhang_z;
 // top of the bridge relative to the top of the block
 bridge_z_top = 0;
 // thickness of the bridge
@@ -31,8 +35,6 @@ bridge_z = 8*layer_height;
 sphere_radius = overhang_r_x / 2 - 0.5;
 // top of the overhang relative to the top of the block
 overhang_z_top = ceil(-sphere_radius / layer_height) * layer_height;
-// height of the overhang
-overhang_z = 15*layer_height;
 // gap between the bridge and the left (X-) tower
 bridge_l_gap = 1;
 // gap between the bridge and the right (X+) tower
