@@ -28,8 +28,9 @@ overhang_r_x = 5;
 bridge_z_top = 0;
 // thickness of the bridge
 bridge_z = 8*layer_height;
+sphere_radius = overhang_r_x / 2 - 0.5;
 // top of the overhang relative to the top of the block
-overhang_z_top = -10*layer_height + bridge_z_top;
+overhang_z_top = ceil(-sphere_radius / layer_height) * layer_height;
 // height of the overhang
 overhang_z = 15*layer_height;
 // gap between the bridge and the left (X-) tower
@@ -93,6 +94,16 @@ module Tower(x, overhang, gap, addpoint, label)
         // pointy cone
         translate([block[X]/2 + gap + overhang - gap + cone_radius, bridge_y_front + bridge_y / 2, bridge_z_top])
         cylinder($fn = 50, h=block[Z] - cone_bridge_gap, r1=cone_radius, r2=0, center=false);  
+
+		
+		translate([-block[X]/2 - overhang_r_x / 2 , 0, -sphere_radius]) 
+		difference()
+		{
+			translate([0, 0, z3]) 
+			sphere($fn = 50, r=sphere_radius);
+			translate([0, 0, z4])
+			cube(sphere_radius * 2, center=true);
+		}
     }
     else
     {
