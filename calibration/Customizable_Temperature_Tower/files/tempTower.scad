@@ -25,12 +25,11 @@ overhang_l_x = 3;
 // right (X+) overhang size
 overhang_r_x = 5;
 // top of the bridge relative to the top of the block
-bridge_z_top = -2*layer_height;
-// top of the overhang relative to the top of the block
-// TODO: Make this an angle instead
-overhang_z_top = -10*layer_height + bridge_z_top;
+bridge_z_top = 0;
 // thickness of the bridge
 bridge_z = 8*layer_height;
+// top of the overhang relative to the top of the block
+overhang_z_top = -10*layer_height + bridge_z_top;
 // height of the overhang
 overhang_z = 15*layer_height;
 // gap between the bridge and the left (X-) tower
@@ -40,7 +39,12 @@ bridge_r_gap = 3;
 bridge_y_front = -block[Y]/2;
 bridge_y = block[Y]/2;
 cone_bridge_gap = 5 * layer_height;
+chimney_bridge_gap = 10 * layer_height;
+chimney_top_height = 5 * layer_height;
 cone_radius = 1.5;
+chimney_radius = cone_radius;
+chimney_hole_radius = 1;
+chimney_top_radius = 1.9;
 // embossing depth of the text
 text_depth = 1;
 // font used for the text
@@ -85,6 +89,28 @@ module Tower(x, overhang, gap, addpoint, label)
             rotate([90,0,180])
             linear_extrude(block[Y])
             polygon(points=overhang_pts);
+        
+        // pointy cone
+        translate([block[X]/2 + gap + overhang - gap + cone_radius, bridge_y_front + bridge_y / 2, bridge_z_top])
+        cylinder($fn = 50, h=block[Z] - cone_bridge_gap, r1=cone_radius, r2=0, center=false);  
+    }
+    else
+    {
+        // chimney 
+        translate([block[X]/2 + gap + overhang - gap + cone_radius, bridge_y_front + bridge_y / 2, bridge_z_top])
+		{
+			difference()
+			{
+				union()
+				{
+					chimney_height = block[Z] - chimney_bridge_gap;
+					cylinder($fn = 50, h=chimney_height, r1=chimney_radius, r2=chimney_radius, center=false);  
+					translate([0, 0, chimney_height - chimney_top_height])
+					cylinder($fn = 50, h=chimney_top_height, r1=chimney_top_radius, r2=chimney_top_radius, center=false);  
+				}
+				cylinder($fn = 50, h=block[Z] - chimney_bridge_gap, r1=chimney_hole_radius, r2=chimney_hole_radius, center=false);  
+			}
+		}
     }
     
     pedestal_z = abs(overhang_z_top -bridge_z_top + bridge_z);
@@ -95,10 +121,6 @@ module Tower(x, overhang, gap, addpoint, label)
             cube([abs(x)-block[X]/2-gap, bridge_y, bridge_z]);
     }
     
-    // pointy cone
-
-    translate([block[X]/2 + gap + overhang - gap + cone_radius, bridge_y_front + bridge_y / 2, bridge_z_top])
-    cylinder($fn = 20, h=block[Z] - cone_bridge_gap, r1=cone_radius, r2=0, center=false);  
 
 }
 
