@@ -1,0 +1,1 @@
+START_PRINT BED_TEMPERATURE={bed_temperature} NOZZLE_TEMPERATURE={print_temperature}
