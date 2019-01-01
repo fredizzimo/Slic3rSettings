@@ -151,15 +151,15 @@ echo("count=", count);
 for (i = [0 : abs(count)]) 
 {
     z3 = z2 + i*(pedestal[Z] + block[Z]);
-    temp = start_temp + i*abs(temp_step);
-    echo("-> ", i, ": temp=", temp, "z=", z3);
+    temp = start_temp - i*abs(temp_step);
+	echo(str("{if [layer_num] == ", z3 / layer_height, "}M104 S", temp, "; Temperature ", temp, " start"));
 
     translate([0,0,z3]) 
     {
         if(start_temp < end_temp) 
-            { Tower(-tower_x_distance/2, overhang_l_x, bridge_l_gap, 0, (start_temp + i*abs(temp_step))); }
+            { Tower(-tower_x_distance/2, overhang_l_x, bridge_l_gap, 0, temp); }
         else
-            { Tower(-tower_x_distance/2, overhang_l_x, bridge_l_gap, 0, (start_temp + -i*abs(temp_step))); }
+            { Tower(-tower_x_distance/2, overhang_l_x, bridge_l_gap, 0, temp); }
 
         Tower(tower_x_distance/2, overhang_r_x, bridge_r_gap, 1);
     }
