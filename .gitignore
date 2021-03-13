@@ -70,3 +70,4 @@ cache/
 snapshots/
 vendor/PrusaResearch.ini
 slic3r.ini
+SuperSlicer.ini
